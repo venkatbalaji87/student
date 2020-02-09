@@ -3,6 +3,8 @@ const students = require("../studentDetail");
 
 const studentRouter = express.Router();
 
+//normal  check
+
 studentRouter
   .post("/", (req, res) => {
     if (req.body.id && req.body.firstName) {
@@ -23,20 +25,37 @@ studentRouter
   })
   .patch("/:id", (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, age, gender, scores } = req.body;
 
     let requiredStudentIndex;
     const requiredStudent = students.find((student, studentIndex) => {
       if (parseInt(id) === student.id) {
         requiredStudentIndex = studentIndex;
         return true;
-      } else return false;
+      }
+      return false;
     });
 
-    console.log(requiredStudent);
-    console.log(requiredStudentIndex);
-
-    res.send("ok");
+    //student detail modification.
+    if (requiredStudent) {
+      const {
+        firstName = requiredStudent.firstName,
+        lastName = requiredStudent.lastName,
+        age = requiredStudent.age,
+        gender = requiredStudent.gender,
+        scores = requiredStudent.scores
+      } = req.body;
+      students[requiredStudentIndex] = {
+        id: requiredStudent.id,
+        firstName,
+        lastName,
+        age,
+        gender,
+        scores
+      };
+      res.status(200).json({ message: "Student details updated" });
+    } else {
+      res.status(400).send("Bad Request");
+    }
   });
 
 module.exports = studentRouter;
