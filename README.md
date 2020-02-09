@@ -1,2 +1,0 @@
-# student
-Created with CodeSandbox
