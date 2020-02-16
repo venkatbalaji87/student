@@ -4,17 +4,25 @@ const expressHBS = require("express-handlebars");
 const path = require("path");
 const studentsRouter = require("./Router/studentrouter");
 const studentRouter = require("./Router/studentrouter");
+const formatIndex = require("./view/helper/helper");
+const student = require("./studentDetail");
 
 const app = express();
 
 const hbs = expressHBS.create({
-  extname: ".hbs"
+  extname: ".hbs",
+  layoutsDir: path.join(__dirname, "./view/layout"),
+  partialsDir: path.join(__dirname, "./view/partial"),
+  helpers: {
+    formatIndex
+  }
 });
 
+//basic config to use handlebars.
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 //including __dirname cuz the following line gets called when code is running
-app.set("views", path.join(__dirname, "./views"));
+app.set("views", path.join(__dirname, "./view"));
 
 app.use(bodyParser.json());
 
@@ -25,7 +33,18 @@ app.use(bodyParser.json());
 // });
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", {
+    layout: "hero",
+    pageTitle: "Home"
+  });
+});
+
+app.get("/web/student", (req, res) => {
+  res.render("student", {
+    layout: "navigation",
+    pageTitle: "Students",
+    student
+  });
 });
 
 app.use("/students", studentsRouter);

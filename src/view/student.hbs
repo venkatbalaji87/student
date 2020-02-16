@@ -13,23 +13,7 @@
 <body>
   <!--Navbar-->
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/home.html">Home Page</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="/students.html">Students <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/add-student.html">Add Student</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+
 
   <!--Tables-->
 
@@ -42,28 +26,24 @@
           <th scope="col">S.No</th>
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Maths Score</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
+        {{#each student}}
         <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
+          <th scope="row">{{formatIndex @index}}</th>
+          <td>{{this.firstName}}</td>
+          <td>{{this.lastName}}</td>
+          <td>{{this.age}}</td>
+          <td>{{this.gender}}</td>
+          <td>{{this.scores.maths}}</td>
           <td><a href="#">Edit</a></td>
         </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td><a href="#">Edit</a></td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>Larry</td>
-          <td>the Bird</td>
-          <td><a href="#">Edit</a></td>
-        </tr>
+        {{/each}}
       </tbody>
     </table>
   </div>
