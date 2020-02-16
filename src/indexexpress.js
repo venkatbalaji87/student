@@ -1,10 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const studentsF = require("./studentDetail");
+const expressHBS = require("express-handlebars");
+const path = require("path");
 const studentsRouter = require("./Router/studentrouter");
 const studentRouter = require("./Router/studentrouter");
 
 const app = express();
+
+const hbs = expressHBS.create({
+  extname: ".hbs"
+});
+
+app.engine(".hbs", hbs.engine);
+app.set("view engine", ".hbs");
+//including __dirname cuz the following line gets called when code is running
+app.set("views", path.join(__dirname, "./views"));
 
 app.use(bodyParser.json());
 
@@ -15,7 +25,7 @@ app.use(bodyParser.json());
 // });
 
 app.get("/", (req, res) => {
-  res.send("Hello");
+  res.render("home");
 });
 
 app.use("/students", studentsRouter);
@@ -54,6 +64,6 @@ app.use("/student", studentRouter);
 //   res.send("Post method called");
 // });
 
-const server = app.listen(9000, () => {
+const server = app.listen(8080, () => {
   console.log(`Server running in port ${server.address().port}`);
 });
