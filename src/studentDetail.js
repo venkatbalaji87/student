@@ -1,6 +1,6 @@
 const students = [
   {
-    id: 100,
+    id: 1,
     firstName: "Arun",
     lastName: "Kumar",
     age: 20,
@@ -12,7 +12,7 @@ const students = [
     }
   },
   {
-    id: 200,
+    id: 2,
     firstName: "Venkat",
     lastName: "Balaji",
     age: 20,
@@ -24,7 +24,7 @@ const students = [
     }
   },
   {
-    id: 300,
+    id: 3,
     firstName: "Manoj",
     lastName: "Balaji",
     age: 20,

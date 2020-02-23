@@ -6,6 +6,7 @@ const studentsRouter = require("./Router/studentrouter");
 const studentRouter = require("./Router/studentrouter");
 const formatIndex = require("./view/helper/helper");
 const student = require("./studentDetail");
+const ifEquality = require("./view/helper/ifEquality");
 
 const app = express();
 
@@ -14,7 +15,8 @@ const hbs = expressHBS.create({
   layoutsDir: path.join(__dirname, "./view/layout"),
   partialsDir: path.join(__dirname, "./view/partial"),
   helpers: {
-    formatIndex
+    formatIndex,
+    ifEquality
   }
 });
 
@@ -25,6 +27,8 @@ app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "./view"));
 
 app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.use((req, res, next) => {
 //   // res.send("Response from Middleware");
@@ -39,11 +43,19 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/web/student", (req, res) => {
+app.get("/web/students", (req, res) => {
   res.render("student", {
     layout: "navigation",
     pageTitle: "Students",
     student
+  });
+});
+
+app.get("/web/add-student", (req, res) => {
+  res.render("addstudent", {
+    layout: "navigation",
+    pageTitle: "Add New Student",
+    studentID: student.length + 1
   });
 });
 
