@@ -2,17 +2,19 @@
 <form action="/student" id="add-student-form" method="POST" target="_blank">
   <input type="hidden" name="id" value="{{studentID}}" />
   <label for="fname">First Name : </label>
-  <input type="text" id="fname" name="firstName" placeholder="First Name" /> <br /> <br />
+  <input type="text" id="fname" name="firstName" placeholder="First Name" value="{{student.firstName}}" /> <br /> <br />
   <label for="lname">Last Name : </label>
-  <input type="text" id="lname" name="lastName" placeholder="Last Name" /> <br /> <br />
+  <input type="text" id="lname" name="lastName" placeholder="Last Name" value="{{student.lastName}}" /> <br /> <br />
   <label for="age">Age : </label>
-  <input type="text" id="age" name="age" placeholder="Age" /> <br /> <br />
+  <input type="text" id="age" name="age" placeholder="Age" value="{{student.age}}" /> <br /> <br />
   <label for="gender">Gender : </label>
-  <input type="radio" id="gender-male" name="gender" value="Male" />
+  <input type="radio" id="gender-male" name="gender" value="Male"
+    checked="{{#if (ifEquality student.gender "male")}}true{{/if}}" />
   <label for="gender-male">Male</label>
-  <input type="radio" id="gender-female" name="gender" value="Female" />
+  <input type="radio" id="gender-female" name="gender" value="Female"
+    {{#if (ifEquality student.gender "female")}}true{{/if}} />
   <label for="gender-female">Female</label> <br /> <br />
-  <input type="submit" value="Add Student" />
+  <input type="submit" value="{{#if (ifEquality mode "edit")}}Save{{else}}Add Student{{/if}}" />
 </form>
 
 <script>
@@ -28,15 +30,28 @@
       //console.log(fieldDetail);
     }
 
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formDetailJson) // body data type must match "Content-Type" header
-    };
+    let url, config;
+    if ("{{mode}}" === "edit") {
+      url = "/student/{{studentID}}";
+      config = {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDetailJson) // body data type must match "Content-Type" header
+      };
+    } else {
+      url = "/student";
+      config = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDetailJson) // body data type must match "Content-Type" header
+      };
+    }
 
-    fetch("/student", config)
+    fetch(url, config)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -50,6 +65,5 @@
       .catch(() => {
         alert("Something went wrong!");
       });
-
   });
 </script>

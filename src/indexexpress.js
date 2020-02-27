@@ -6,6 +6,7 @@ const studentsRouter = require("./Router/studentrouter");
 const studentRouter = require("./Router/studentrouter");
 const formatIndex = require("./view/helper/helper");
 const student = require("./studentDetail");
+const teacherDeatils = require("./teacherDetail");
 const ifEquality = require("./view/helper/ifEquality");
 
 const app = express();
@@ -14,6 +15,8 @@ const hbs = expressHBS.create({
   extname: ".hbs",
   layoutsDir: path.join(__dirname, "./view/layout"),
   partialsDir: path.join(__dirname, "./view/partial"),
+  teacherDetailLayout: path.join(__dirname, "./view/teacherLayout"),
+  teacherPartial: path.join(__dirname, "/view/teacherPartial"),
   helpers: {
     formatIndex,
     ifEquality
@@ -25,6 +28,7 @@ app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 //including __dirname cuz the following line gets called when code is running
 app.set("views", path.join(__dirname, "./view"));
+app.set("teacherViews", apth.join(__dirname, "./view"));
 
 app.use(bodyParser.json());
 
@@ -43,6 +47,14 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/teachers", (req, res) => {
+  res.render("teacherDeatils", {
+    layout: "navigation",
+    pageTitle: "Teachers",
+    teacherDeatils
+  });
+});
+
 app.get("/web/students", (req, res) => {
   res.render("student", {
     layout: "navigation",
@@ -57,6 +69,25 @@ app.get("/web/add-student", (req, res) => {
     pageTitle: "Add New Student",
     studentID: student.length + 1
   });
+});
+
+app.get("/web/edit-student/:id", (req, res) => {
+  const { id = "" } = req.params;
+  const requiredStudent = student.find(student => {
+    if (parseInt(id) === student.id) return true;
+    else return false;
+  });
+  if (requiredStudent) {
+    res.render("addstudent", {
+      layout: "navigation",
+      pageTitle: "Add New Student",
+      studentID: requiredStudent.id,
+      mode: "edit",
+      student: requiredStudent
+    });
+  } else {
+    res.status(404).send("Not Found");
+  }
 });
 
 app.use("/students", studentsRouter);
@@ -95,6 +126,6 @@ app.use("/student", studentRouter);
 //   res.send("Post method called");
 // });
 
-const server = app.listen(8080, () => {
+const server = app.listen(3080, () => {
   console.log(`Server running in port ${server.address().port}`);
 });
