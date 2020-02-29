@@ -15,8 +15,8 @@ const hbs = expressHBS.create({
   extname: ".hbs",
   layoutsDir: path.join(__dirname, "./view/layout"),
   partialsDir: path.join(__dirname, "./view/partial"),
-  teacherDetailLayout: path.join(__dirname, "./view/teacherLayout"),
-  teacherPartial: path.join(__dirname, "/view/teacherPartial"),
+  // teacherDetailLayout: path.join(__dirname, "./view/teacherLayout"),
+  // teacherPartial: path.join(__dirname, "/view/teacherPartial"),
   helpers: {
     formatIndex,
     ifEquality
@@ -28,7 +28,6 @@ app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 //including __dirname cuz the following line gets called when code is running
 app.set("views", path.join(__dirname, "./view"));
-app.set("teacherViews", apth.join(__dirname, "./view"));
 
 app.use(bodyParser.json());
 
@@ -47,9 +46,16 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.render("home", {
+    teacherDetailLayout: "hero",
+    pageTitle: "Home"
+  });
+});
+
 app.get("/teachers", (req, res) => {
   res.render("teacherDeatils", {
-    layout: "navigation",
+    layout: "teacher/navigation",
     pageTitle: "Teachers",
     teacherDeatils
   });
