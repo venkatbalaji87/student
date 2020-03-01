@@ -32,19 +32,45 @@ const teacherTable = classDB.define("teachers", {
   }
 });
 
-const newTeacher = {
-  firstName: "Manoj",
-  lastName: "Balaji",
-  email: "test@gmail.com",
-  subject: "english"
-};
+const newTeacher = [
+  {
+    firstName: "Manoj",
+    lastName: "Balaji",
+    email: "test@gmail.com",
+    subject: "english"
+  },
+  {
+    firstName: "Manoj",
+    lastName: "Balaji",
+    email: "test1@gmail.com",
+    subject: "english"
+  },
+  {
+    firstName: "Manoj",
+    lastName: "Balaji",
+    email: "test2@gmail.com",
+    subject: "english"
+  },
+  {
+    firstName: "Manoj",
+    lastName: "Balaji",
+    email: "test3@gmail.com",
+    subject: "english"
+  },
+  {
+    firstName: "Manoj",
+    lastName: "Balaji",
+    email: "test4@gmail.com",
+    subject: "english"
+  }
+];
 
-// teacherTable
-//   .create(newTeacher)
-//   .then(result => {
-//     console.log(result.get());
-//   })
-//   .catch(console.error);
+teacherTable
+  .create(newTeacher)
+  .then(result => {
+    console.log(result.get());
+  })
+  .catch(console.error);
 
 // creating a table we use sync
 
@@ -59,6 +85,7 @@ teacherTable
   })
   .catch(console.error);
 
+//to find a value
 teacherTable
   .findOne({
     where: {
@@ -70,4 +97,12 @@ teacherTable
   })
   .catch(console.error);
 
-module.exports = teacherTable;
+teacherTable
+  .sync({ force: true })
+  .then(() => {
+    return teacherTable.bulkCreate(newTeacher, { returning: true });
+  })
+  .then(result => {
+    console.log(result.forEach(item => console.log(item.get())));
+  })
+  .catch(console.error);
