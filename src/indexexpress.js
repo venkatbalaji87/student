@@ -5,12 +5,15 @@ const expressHBS = require("express-handlebars");
 const path = require("path");
 const studentsRouter = require("./Router/studentrouter");
 const studentRouter = require("./Router/studentrouter");
+const teacherRouter = require("./Router/teacherRouter");
 const formatIndex = require("./view/helper/helper");
 const student = require("./studentDetail");
 const teacherDeatils = require("./teacherDetail");
 const ifEquality = require("./view/helper/ifEquality");
 const webRouter = require("../src/Router/webRouter");
 const adminRouter = require("../src/Router/adminRouter");
+const { validateToken } = require("../src/hashing/jwttoken");
+const adminAuth = require("./middlewares/adminAuth");
 
 const app = express();
 
@@ -44,9 +47,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 app.get("/", (req, res) => {
+  const isLoggedIn = validateToken(req.cookies.jwt);
   res.render("home", {
     layout: "hero",
-    pageTitle: "Home"
+    pageTitle: "Home",
+    isLoggedIn: !!isLoggedIn //truthy or falsy value
   });
 });
 
@@ -107,6 +112,8 @@ app.use("/student", studentRouter);
 app.use("/web", webRouter);
 
 app.use("/admin", adminRouter);
+
+app.use("/teachers", adminAuth, teacherRouter);
 
 // app.get("/students", (req, res) => {
 //   /**

@@ -5,3 +5,13 @@ exports.createToken = payload => {
     expiresIn: "3 hours"
   });
 };
+
+exports.validateToken = token => {
+  try {
+    const data = jwt.verify(token, process.env.JWT_KEY);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+};
