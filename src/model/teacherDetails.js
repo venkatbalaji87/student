@@ -65,44 +65,48 @@ const newTeacher = [
   }
 ];
 
-teacherTable
-  .create(newTeacher)
-  .then(result => {
-    console.log(result.get());
-  })
-  .catch(console.error);
+// teacherTable
+//   .create(newTeacher)
+//   .then(result => {
+//     console.log(result.get());
+//   })
+//   .catch(console.error);
 
 // creating a table we use sync
 
-teacherTable
-  .sync({ force: false })
-  .then(() => {
-    console.log("Table Created");
-    return teacherTable.create(newTeacher);
-  })
-  .then(result => {
-    console.log(result.get());
-  })
-  .catch(console.error);
+// teacherTable
+//   .sync({ force: false })
+//   .then(() => {
+//     console.log("Table Created");
+//     return teacherTable.create(newTeacher);
+//   })
+//   .then(result => {
+//     console.log(result.get());
+//   })
+//   .catch(console.error);
 
-//to find a value
-teacherTable
-  .findOne({
-    where: {
-      email: "test@gmail.com"
-    }
-  })
-  .then(teacherInstance => {
-    console.log(teacherInstance.get());
-  })
-  .catch(console.error);
+// //to find a value
+// teacherTable
+//   .findOne({
+//     where: {
+//       email: "test@gmail.com"
+//     }
+//   })
+//   .then(teacherInstance => {
+//     console.log(teacherInstance.get());
+//   })
+//   .catch(console.error);
 
-teacherTable
-  .sync({ force: true })
-  .then(() => {
-    return teacherTable.bulkCreate(newTeacher, { returning: true });
-  })
-  .then(result => {
-    console.log(result.forEach(item => console.log(item.get())));
-  })
-  .catch(console.error);
+const teacherSync = () => {
+  teacherTable
+    .sync({ force: true })
+    .then(() => {
+      return teacherTable.bulkCreate(newTeacher, { returning: true });
+    })
+    .then(result => {
+      console.log(result.forEach(item => console.log(item.get())));
+    })
+    .catch(console.error);
+};
+
+module.exports = teacherTable;

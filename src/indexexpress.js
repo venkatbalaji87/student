@@ -8,6 +8,8 @@ const formatIndex = require("./view/helper/helper");
 const student = require("./studentDetail");
 const teacherDeatils = require("./teacherDetail");
 const ifEquality = require("./view/helper/ifEquality");
+const webRouter = require("../src/Router/webRouter");
+const adminRouter = require("../src/Router/adminRouter");
 
 const app = express();
 
@@ -99,6 +101,10 @@ app.get("/web/edit-student/:id", (req, res) => {
 app.use("/students", studentsRouter);
 
 app.use("/student", studentRouter);
+
+app.use("/web", webRouter);
+
+app.use("/admin", adminRouter);
 
 // app.get("/students", (req, res) => {
 //   /**
