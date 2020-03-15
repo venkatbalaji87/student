@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const expressHBS = require("express-handlebars");
 const path = require("path");
 const studentsRouter = require("./Router/studentrouter");
@@ -32,6 +33,7 @@ app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "./view"));
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
