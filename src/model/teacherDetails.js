@@ -1,7 +1,7 @@
 const Sequalize = require("sequelize");
 const classDB = require("../config/classDB");
 
-const teacherTable = classDB.define("teachers", {
+const teacherTable = classDB.define("teachersDetails", {
   id: {
     type: Sequalize.INTEGER,
     primaryKey: true,
@@ -97,16 +97,14 @@ const newTeacher = [
 //   })
 //   .catch(console.error);
 
-const teacherSync = () => {
-  teacherTable
-    .sync({ force: true })
-    .then(() => {
-      return teacherTable.bulkCreate(newTeacher, { returning: true });
-    })
-    .then(result => {
-      console.log(result.forEach(item => console.log(item.get())));
-    })
-    .catch(console.error);
-};
+teacherTable
+  .sync({ force: true })
+  .then(() => {
+    return teacherTable.bulkCreate(newTeacher, { returning: true });
+  })
+  .then(result => {
+    console.log(result.forEach(item => console.log(item.get())));
+  })
+  .catch(console.error);
 
 module.exports = teacherTable;
